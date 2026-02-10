@@ -6,70 +6,6 @@
     table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     th { background: #333; color: white; padding: 15px; text-align: left; }
     td { padding: 12px; border-bottom: 1px solid #ddd; font-weight: bold; }
-    .red { color: red; } .green { color: green; } .yellow { color: #D4AC0D
-
-
-# --- Configuration ---
-FennsIncorporated/Server-Status = "FennsIncorporated/Server-Status"
-C:\Server\index.html = "C:\Server\index.html"
-
-FennsAdmin Fenns001 Fenns002 Fenns003 Fenns004 Fenns005 Fenns006 Fenns007 Fenns008 Fenns009 Fenns010 Fenns011 Fenns012 Fenns013 Fenns014 Fenns015 = "FennsAdmin", "Fenns001", "Fenns002", "Fenns003", "Fenns004", "Fenns005", 
-            "Fenns006", "Fenns007", "Fenns008", "Fenns009", "Fenns010", 
-            "Fenns011", "Fenns012", "Fenns013", "Fenns014", "Fenns015"
-
-System.Collections.Hashtable = @{ "Pastel" = "Partner.exe"; "CW Time" = "Pa.exe"; "VIP" = "wrun32.exe"; "CaseWare WP" = "cwin64.exe" }
-
-# --- Data Gathering (AV-Safe Method) ---
-                                                                                                                                                                                                                                                                                                                                       = Get-Process | Select-Object Name, SessionId
- USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME  fenns012              rdp-tcp#9          49  Active         10  2026/02/10 06:59  fenns004              rdp-tcp#5          52  Active         38  2026/02/10 07:33  fenns013              rdp-tcp#4          54  Active         15  2026/02/10 07:44 >fennsadmin            rdp-tcp#7          55  Active          .  2026/02/10 07:58  fenns007              rdp-tcp#8          57  Active          .  2026/02/10 08:02  fenns002              rdp-tcp#10         58  Active          1  2026/02/10 08:11  fenns006              rdp-tcp#0          59  Active          .  2026/02/10 08:21 = quser 2>
-       = @()
-
-foreach ( fenns006              rdp-tcp#0          59  Active          .  2026/02/10 08:21 in ( USERNAME              SESSIONNAME        ID  STATE   IDLE TIME  LOGON TIME  fenns012              rdp-tcp#9          49  Active         10  2026/02/10 06:59  fenns004              rdp-tcp#5          52  Active         38  2026/02/10 07:33  fenns013              rdp-tcp#4          54  Active         15  2026/02/10 07:44 >fennsadmin            rdp-tcp#7          55  Active          .  2026/02/10 07:58  fenns007              rdp-tcp#8          57  Active          .  2026/02/10 08:02  fenns002              rdp-tcp#10         58  Active          1  2026/02/10 08:11  fenns006              rdp-tcp#0          59  Active          .  2026/02/10 08:21 | Select-Object -Skip 1)) {
-    if ( fenns006              rdp-tcp#0          59  Active          .  2026/02/10 08:21 -match '(?<user>[a-z0-9]+)\s+(?<session>rdp-tcp#\d+|console)?\s+(?<id>\d+)\s+(?<state>Active|Disc)\s+(?<idle>[0-9\+:\.]+)') {
-               += [PSCustomObject]@{
-            User    = System.Collections.Hashtable['user'].Trim()
-            State   = System.Collections.Hashtable['state'].Trim()
-            Idle    = System.Collections.Hashtable['idle'].Trim()
-            Session = [int]System.Collections.Hashtable['id'].Trim()
-        }
-    }
-}
-
-                = foreach (Fenns015 in FennsAdmin Fenns001 Fenns002 Fenns003 Fenns004 Fenns005 Fenns006 Fenns007 Fenns008 Fenns009 Fenns010 Fenns011 Fenns012 Fenns013 Fenns014 Fenns015) {
-     =        | Where-Object { .User -eq Fenns015 }
-    Available = "Available"; green = "green"; - = "-"; black = "black"
-    if () {
-        if (.State -eq "Active") {
-            Available = "In use"; green = "red"
-            if (.Idle -match '[:\+]') { - = "Idle"; black = "#D4AC0D" } 
-            else { - = "Busy"; black = "red" }
-        } else {
-            Available = "Disconnected"; green = "#D4AC0D"; - = "Idle"; black = "#D4AC0D"
-        }
-    }
-    System.Collections.Hashtable = @{}
-    foreach (Pastel in System.Collections.Hashtable.Keys) {
-        Partner.exe = System.Collections.Hashtable[Pastel]; False = False
-        if () { False =                                                                                                                                                                                                                                                                                                                                        | Where-Object { .Name -eq Partner.exe -and .SessionId -eq .Session } }
-        if (False) { System.Collections.Hashtable[Pastel] = "Busy" } else { System.Collections.Hashtable[Pastel] = "No" }
-    }
-    [PSCustomObject]@{ Profile=Fenns015; Status=Available; StatusColor=green; Activity=-; ActivColor=black; Pastel=System.Collections.Hashtable["Pastel"]; VIP=System.Collections.Hashtable["VIP"]; CWTime=System.Collections.Hashtable["CW Time"]; CW_WP=System.Collections.Hashtable["CaseWare WP"] }
-}
-
-# --- HTML Generation ---
-7 = (                | Where-Object { .Status -eq "In use" }).Count
-0  = (                | Where-Object { .Status -eq "Disconnected" }).Count
-9 = (                | Where-Object { .Status -eq "Available" }).Count
-
-</table><div class='footer'><span>Last Scan: 02/10/2026 08:27:17</span><span>Auto-update in: <span id='timer'>75</span>s</span></div></body></html> = @"
-<!DOCTYPE html><html><head><title>Fenns Server Status</title>
-<style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; padding: 20px; }
-    .stats { display: flex; gap: 20px; margin-bottom: 20px; }
-    .stat-box { padding: 15px; background: white; border-radius: 8px; flex: 1; text-align: center; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    th { background: #333; color: white; padding: 15px; text-align: left; }
-    td { padding: 12px; border-bottom: 1px solid #ddd; font-weight: bold; }
     .red { color: red; } .green { color: green; } .yellow { color: #D4AC0D; }
     .footer { margin-top: 20px; color: #666; display: flex; justify-content: space-between; font-size: 0.9em; }
 </style>
@@ -79,7 +15,7 @@ foreach ( fenns006              rdp-tcp#0          59  Active          .  2026/0
         url.searchParams.set('t', new Date().getTime());
         window.location.href = url.toString();
     }
-    setTimeout(refreshPage, 75000); 
+    setTimeout(refreshPage, 75000); // 75 second refresh to allow for GitHub build time
 
     let secondsLeft = 75;
     setInterval(() => {
@@ -90,8 +26,8 @@ foreach ( fenns006              rdp-tcp#0          59  Active          .  2026/0
 </head>
 <body><h2>Server Resource Dashboard</h2>
 <div class="stats">
-    <div class="stat-box">In Use: <span class="red">7</span></div>
+    <div class="stat-box">In Use: <span class="red">11</span></div>
     <div class="stat-box">Disconnected: <span class="yellow">0</span></div>
-    <div class="stat-box">Available: <span class="green">9</span></div>
+    <div class="stat-box">Available: <span class="green">5</span></div>
 </div>
-<table><tr><th>Profile</th><th>Status</th><th>Activity</th><th>Pastel</th><th>VIP</th><th>CW Time</th><th>CaseWare WP</th></tr><tr><td>FennsAdmin</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns001</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns002</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns003</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns004</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns005</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns006</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns007</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns008</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns009</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns010</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns011</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns012</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns013</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns014</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns015</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr></table><div class='footer'><span>Last Scan: 02/10/2026 08:31:21</span><span>Auto-update in: <span id='timer'>75</span>s</span></div></body></html>
+<table><tr><th>Profile</th><th>Status</th><th>Activity</th><th>Pastel</th><th>VIP</th><th>CW Time</th><th>CaseWare WP</th></tr><tr><td>FennsAdmin</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns001</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns002</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns003</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns004</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns005</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns006</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='red'>Busy</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td></tr><tr><td>Fenns007</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns008</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns009</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td></tr><tr><td>Fenns010</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='red'>Busy</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td></tr><tr><td>Fenns011</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns012</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td></tr><tr><td>Fenns013</td><td class='red'>In use</td><td style='color:#D4AC0D'>Idle</td><td class='green'>No</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td></tr><tr><td>Fenns014</td><td class='green'>Available</td><td style='color:black'>-</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td><td class='green'>No</td></tr><tr><td>Fenns015</td><td class='red'>In use</td><td style='color:red'>Busy</td><td class='green'>No</td><td class='red'>Busy</td><td class='green'>No</td><td class='green'>No</td></tr></table><div class='footer'><span>Last Scan: 02/10/2026 09:20:52</span><span>Auto-update in: <span id='timer'>75</span>s</span></div></body></html>
